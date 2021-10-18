@@ -54,7 +54,9 @@ Initial set of Requirements:
 
 ## vi) Each reservation has a total amount and surcharges (tax rate, etc)
 
-### Attr: Cust_Id, D_Name, Building_ID, Time&day,  Shopping_C(FK to SC) [NOTE!!!], Dining_ID(FK to Dining place),  Payment_Details_ID(FK to Payment Details), Reservation_status, total_amount, net_amount
+## vi) Each reservation has delivery details
+
+### Attr: Cust_Id, D_Name, Building_ID, Time&day,  Shopping_C(FK to SC) [NOTE!!!], Dining_ID(FK to Dining place),  Payment_Details_ID(FK to Payment Details), Delivery_id(FK to Delivery detials), Reservation_status, total_amount, net_amount
 
 # 7) Payment instrument (PK: Payment_ID)
 
@@ -70,7 +72,7 @@ Initial set of Requirements:
 
 ## i) Contains the customer id and the payment options that the customer has added for 	himself/herself
 
-### Attributes: Customer_ID, Card_details_id, payment_vendor_id
+### Attributes: Customer_ID, payment_details_id
 
 
 
@@ -98,7 +100,7 @@ Just a building name
 
 ## i) This table needs to store the order history of customers
 
-### Attributes: Order_id, Cust_id(FK to customer entity), Reservation_id(FK to reservation entity)
+### Attributes: Order_id, Reservation_id(FK to reservation entity)
 
 # 13) Hours_of_operation:
 
@@ -118,11 +120,11 @@ Just a building name
 
 # 16) Online Vendor Details
 
-### Attributes: Vendor_id, Vendor_name, VEmail (PK), Billing_Address -> FK(Address_id, Cust_id)
+### Attributes: Payment_details_id -> FK(Payment_details_id-> payment_details_id), Vendor_name, VEmail (PK), Billing_Address -> FK(Address_id, Cust_id)
 
 # 17) Card Details
 
-### Attributes: Card_Name, PK(Card_Number), Cust_id, Billing_Address -> FK(Address_id, Cust_id)
+### Attributes: Payment_details_id -> FK(Payment_details_id-> payment_details_id), Card_Name, Card_Number, Exp_month, Exp_year, Security_code,  Billing_Address -> FK(Address_id, Cust_id)
 
 
 Elephant in the room : COUPONS!
