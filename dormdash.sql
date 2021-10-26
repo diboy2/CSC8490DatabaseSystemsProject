@@ -1,0 +1,37 @@
+CREATE TABLE Building (
+    Building_id INTEGER,
+    Building_name VARCHAR(50),
+    CONSTRAINT BuildingPK
+    PRIMARY KEY(Building_id)
+);
+
+CREATE TABLE Customer (
+    Customer_id INTEGER,
+    Room_num INTEGER,-- how do university room numbers work.
+    Phone INTEGER,
+    Email VARCHAR(50),
+    First_name VARCHAR(50),
+    Middle_name VARCHAR(50),
+    Last_name VARCHAR(50),
+    Building_id INTEGER,
+    CONSTRAINT CustomerPK
+    PRIMARY KEY(Customer_id),
+    CONSTRAINT CustomerBuilding_idFK
+    FOREIGN KEY(Building_id) REFERENCES Building(Building_id)
+);
+
+CREATE TABLE Address (
+    Address_id INTEGER,
+    Address_name VARCHAR(50) NULL,
+    Address2 VARCHAR(50),
+    City VARCHAR(50),
+    State CHAR(2),
+    Street VARCHAR(50),
+    Zip_code NUMBER(5,0),
+    Address_type VARCHAR(50) ,-- add check constraint
+    Customer_id INTEGER,
+    Constraint AddressPk
+    PRIMARY KEY (Address_id),
+    CONSTRAINT AddressCustomer_idFK
+    FOREIGN KEY(Customer_id) REFERENCES CUSTOMER(Customer_id)
+);
