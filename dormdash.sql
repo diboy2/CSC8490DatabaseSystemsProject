@@ -30,8 +30,18 @@ CREATE TABLE Address (
     Zip_code NUMBER(5,0),
     Address_type VARCHAR(50) ,-- add check constraint
     Customer_id INTEGER,
-    Constraint AddressPk
+    Constraint AddressPK
     PRIMARY KEY (Address_id),
     CONSTRAINT AddressCustomer_idFK
-    FOREIGN KEY(Customer_id) REFERENCES CUSTOMER(Customer_id)
+    FOREIGN KEY(Customer_id) REFERENCES Customer(Customer_id)
+);
+
+CREATE TABLE Dining_place (
+    Building_id INTEGER,
+    Dining_name VARCHAR(50) NULL,
+    Dining_id Integer,
+    Constraint Dining_placePK
+    PRIMARY KEY (Building_id, Dining_id),
+    CONSTRAINT Dining_placeBuilding_idFK
+    FOREIGN KEY(Building_id) REFERENCES Building(Building_id)
 );
