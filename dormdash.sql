@@ -41,7 +41,17 @@ CREATE TABLE Dining_place (
     Dining_name VARCHAR(50) NULL,
     Dining_id Integer,
     Constraint Dining_placePK
-    PRIMARY KEY (Building_id, Dining_id),
+    PRIMARY KEY (Dining_id),
     CONSTRAINT Dining_placeBuilding_idFK
     FOREIGN KEY(Building_id) REFERENCES Building(Building_id)
+);
+
+CREATE TABLE Delivery_details (
+    Dining_id INTEGER,
+    Delivery_type VARCHAR(50),
+    Delivery_id INTEGER,
+    Constraint Delivery_detailsPK
+    PRIMARY KEY (Delivery_id),
+    Constraint Delivery_detailsDining_idFK
+    FOREIGN KEY (Dining_id) REFERENCES Dining_place(Dining_id)
 );
