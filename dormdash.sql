@@ -55,3 +55,67 @@ CREATE TABLE Delivery_details (
     Constraint Delivery_detailsDining_idFK
     FOREIGN KEY (Dining_id) REFERENCES Dining_place(Dining_id)
 );
+
+CREATE TABLE Hours_of_operation (
+    Days_of_week VARCHAR(15),
+    Open_time DATE, -- need to be more specific with time
+    Close_time DATE,
+    Dining_id INTEGER,
+    -- CONSTRAINT Hours_of_operationPK
+    -- PRIMARY KEY(Days_of_week, Dining_id),
+    -- CONSTRAINT Days_of_weekCHK check constraint
+    CONSTRAINT Hours_of_operationDining_idFK
+    FOREIGN KEY(Dining_id) REFERENCES Dining_place(Dining_id)
+);
+
+CREATE TABLE Menu (
+    Menu_type VARCHAR(10),
+    Dining_id INTEGER,
+    Menu_id INTEGER,
+    CONSTRAINT MenuPK
+    PRIMARY KEY(Menu_id),
+    CONSTRAINT MenuDining_idFK
+    FOREIGN KEY (Dining_id) REFERENCES Dining_place(Dining_id)
+);
+
+CREATE TABLE Food (
+    Food_id INTEGER,
+    Food_price FLOAT,
+    Food_name VARCHAR(50),
+    CONSTRAINT FoodPK
+    PRIMARY KEY(Food_id)
+);
+
+CREATE TABLE Menu_food_bridge (
+    Menu_id INTEGER,
+    Food_id INTEGER,
+    CONSTRAINT Menu_food_bridgePK
+    PRIMARY KEY(Menu_id, Food_id),
+    CONSTRAINT Menu_food_bridgeMenu_idFK
+    FOREIGN KEY(Menu_id) REFERENCES Menu(Menu_id),
+    CONSTRAINT Menu_food_bridgeFood_idFK
+    FOREIGN KEY(Food_id) REFERENCES Food(Food_id)
+);
+
+CREATE TABLE Nutritional_information (
+    Food_id INTEGER,
+    Protein FLOAT,
+    Carbs FlOAT,
+    Fat FLOAT,
+    Calories INTEGER,
+    CONSTRAINT Nutritional_informationPK
+    PRIMARY KEY(Food_id),
+    CONSTRAINT Nutritional_infoFood_idFK
+    FOREIGN KEY(Food_id) REFERENCES Food(Food_id)
+);
+
+CREATE TABLE Shopping_cart (
+    Shopping_cart_id INTEGER,
+    Quantity INTEGER,
+    Food_id INTEGER,
+    Reservation_id INTEGER,
+    CONSTRAINT Shopping_cartPK
+    PRIMARY KEY(Shopping_cart_id),
+    CONSTRAINT Shopping_cart_Food_idFK
+    FOREIGN KEY(Food_id) REFERENCES Food(Food_id)
+);
