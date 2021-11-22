@@ -3,6 +3,7 @@ module.exports = {
     siteUrl: "https://www.yourdomain.tld",
     title: "Dormdash",
   },
+  pathPrefix: '/dormdash',
   plugins: [
     "gatsby-plugin-sass",
     "gatsby-plugin-image",
