@@ -1,4 +1,4 @@
-import './welcome.css';
+import './main.css';
 import * as React from "react";
 
 const createAccount = () => {
@@ -102,7 +102,7 @@ const createAccount = () => {
           Continue
         </button>
         <p className = "form__text">
-          <a className = "form__link" href = "./welcome" id = "linkLogin">
+          <a className = "form__link" href = "./login" id = "linkLogin">
             Have an Account? Login.
           </a>
         </p>

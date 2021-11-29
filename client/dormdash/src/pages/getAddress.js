@@ -1,11 +1,11 @@
-import './welcome.css';
+import './main.css';
 import * as React from "react";
 
 const createAccount = () => {
   return (
   <body>
     <div className = "container">
-      <form className = "form" id = "createAccount" action = "./welcome">
+      <form className = "form" id = "createAccount" action = "./login">
         <h1 className = "form__title">
           Create a DormDash Account
         </h1>
@@ -109,7 +109,7 @@ const createAccount = () => {
           Submit and Continue to Login
         </button>
         <p className = "form__text">
-          <a className = "form__link" href = "./welcome" id = "linkLogin">
+          <a className = "form__link" href = "./login" id = "linkLogin">
             Have an Account? Login.
           </a>
         </p>

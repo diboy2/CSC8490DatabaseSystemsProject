@@ -1,13 +1,13 @@
-import './welcome.css';
+import './main.css';
 import * as React from "react";
 
 
-const welcome = () => {
+const login = () => {
   return (
   <body>
     <div className = "container">
 
-      <form className = "form" id = "login" >
+      <form className = "form" id = "login" action = "./welcome">
         <h1 className = "form__title">
           Login to DormDash
         </h1>
@@ -45,4 +45,4 @@ const welcome = () => {
   )
 };
 
-export default welcome
+export default login
