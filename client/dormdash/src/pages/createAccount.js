@@ -5,7 +5,7 @@ const createAccount = () => {
   return (
   <body>
     <div className = "container">
-      <form className = "form" id = "createAccount" action = "./getAddress">
+      <form className = "form" id = "getPersonalInfo" action = "./getAddress">
         <h1 className = "form__title">
           Create a DormDash Account
         </h1>
@@ -98,7 +98,7 @@ const createAccount = () => {
           <div className = "form__input-error-message">
           </div>
         </div>
-        <button className = "form__button" id = "addressButton">
+        <button className = "form__button" id = "getPersonalInfoButton">
           Continue
         </button>
         <p className = "form__text">

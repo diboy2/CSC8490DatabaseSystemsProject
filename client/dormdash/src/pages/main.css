@@ -1,6 +1,6 @@
 body {
   --color-primary : #ade8f4;
-  --color-primary-dark : #0096c7;
+  --color-primary-dark : #00205B;
   --color-error : #d00000;
   --color-success : #81b29a;
   --border-radius : 6px;
@@ -33,7 +33,8 @@ body {
 
 .container, .form__input, .form__button {
   font : 300 1rem "Gotham", sans-serif;
-  margin-bottom : 20px;
+  margin-bottom : 10px;
+  margin-top : 10px;
 }
 
 .form__button {
@@ -205,14 +206,6 @@ body {
   display: flex;
 }
 
-.dining-item-image {
-  width: 80px;
-  height: 80px;
-  flex-shrink: 0;
-  object-fit: cover;
-  margin-right: 1.5em;
-}
-
 .dining-item-text {
   flex-grow: 1;
 }
@@ -256,7 +249,6 @@ body {
   height : 400px;
 }
 
-
 .dining-menu-button {
   display : flex;
   position : flex;
@@ -287,11 +279,12 @@ body {
   height : 200px;
 }
 
-.radio {
-  display : none;
+input[type = radio] {
+  visibility : hidden;
 }
 
 .radio-input-label {
+  display : flex;
   border-radius : var(--border-radius);
   box-shadow : 0 0 5px rgba(0, 0, 0, 0.25);
   padding : 4px 6px;
@@ -316,7 +309,7 @@ a {
 }
 
 .menu {
-  font-family: "Inter", sans-serif;
+  font-family: 300 1rem "Gotham", sans-serif;
   font-size: 14px;
 }
 
@@ -401,4 +394,188 @@ a {
   box-shadow : 0 0 40px rgba(0, 0, 0, 0.2);
   border-radius : var(--border-radius);
   background : #FFFFFF;
+}
+
+.order-history-container {
+  display : block;
+  width : 600px;
+  max-width : 600px;
+  margin : 2rem;
+  padding : 2rem;
+  box-shadow : 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius : var(--border-history-radius);
+  background : #FFFFFF;
+  font : 300 1rem "Gotham", sans-serif;
+}
+
+.completed-icon {
+  float : right;
+  color : #378805;
+}
+
+.in-progress-icon {
+  float : right;
+  color : #FFE800;
+}
+
+.cancelled-icon {
+  float : right;
+  color : #FF0000;
+}
+
+.order-history-table {
+  width : 100%;
+  margin : auto;
+  display : table;
+}
+
+.order-history-row {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.order-history-total-cost {
+  margin-right: 4.75rem;
+}
+
+.order-history-payment-method {
+  margin-right: 4.75rem;
+}
+.order-history-delivery-time {
+  margin-right: 4.75rem;
+}
+
+.order-history-delivery-method {
+  margin-right: 4.75rem;
+}
+
+
+.complete-history {
+  display : flex;
+  flex-direction: column;
+  font-family: 300 1rem "Gotham", sans-serif;
+}
+
+.order-history-group-heading {
+  margin: 0;
+  padding-bottom: 1em;
+}
+
+.order-history-group-status-subheading {
+  margin: 0;
+  padding-bottom: 1em;
+}
+
+.order-history-group-location-subheading {
+  margin: 0;
+  padding-top : 1em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #ccc;
+}
+
+.order-history-group {
+  grid-template-columns: 1fr;
+  gap: 1.5em;
+  padding: 1.5em 0;
+}
+
+.order-metadata {
+  display :inline-flex;
+  justify-content: right;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.expiration_info {
+  margin-right: 2px;
+  margin-left : 5px;
+}
+
+.payment-change-buttons, .time-change-buttons {
+  display : flex;
+  box-sizing : border-box;
+}
+
+.payment-change-buttons:checked + .radio-input-label {
+  background : #000000;
+}
+
+
+.time-change-buttons:checked + .radio-input-label {
+  background : #000000;
+}
+
+.shopping-cart-container {
+  display : block;
+  width : 600px;
+  max-width : 600px;
+  margin : 2rem;
+  padding : 2rem;
+  box-shadow : 0 0 40px rgba(0, 0, 0, 0.2);
+  border-radius : var(--bshopping-cart-radius);
+  background : #FFFFFF;
+  font : 300 1rem "Gotham", sans-serif;
+}
+
+.shopping-cart-table {
+  width : 100%;
+  margin : auto;
+  display : table;
+}
+
+.shopping-cart-row {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.shopping-cart-total-cost {
+  margin-right: 4.75rem;
+}
+
+.shopping-cart-payment-method {
+  margin-right: 4.75rem;
+}
+.shopping-cart-delivery-time {
+  margin-right: 4.75rem;
+}
+
+.shopping-cart-delivery-method {
+  margin-right: 4.75rem;
+}
+
+
+.complete-history {
+  display : flex;
+  flex-direction: column;
+  font-family: 300 1rem "Gotham", sans-serif;
+}
+
+.shopping-cart-group-heading {
+  margin: 0;
+  padding-bottom: 1em;
+}
+
+.shopping-cart-group-status-subheading {
+  margin: 0;
+  padding-bottom: 1em;
+}
+
+.shopping-cart-group-location-subheading {
+  margin: 0;
+  padding-top : 1em;
+  padding-bottom: 1em;
+  border-bottom: 2px solid #ccc;
+}
+
+.shopping-cart-group {
+  grid-template-columns: 1fr;
+  gap: 1.5em;
+  padding: 1.5em 0;
+}
+
+.order-metadata {
+  display :inline-flex;
+  justify-content: right;
+  margin-left: auto;
+  margin-right: 0;
 }

@@ -36,7 +36,7 @@ const customer = () => {
             </span>
           </button>
         </a>
-        <a herf = "./customer">
+        <a href = "./customer">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               account_circle
@@ -76,8 +76,10 @@ const customer = () => {
 
 
       <div class = "change-information-container">
+        <input type = "radio" id = "updatePersonInfo" name = "update_info_option" value = "updatePersonInfo" class = "form-change-buttons"/>
+        <label for = "updatePersonInfo" class = "radio-input-label">Update Personal Information</label>
         <div className = "container">
-          <form className = "form" id = "createAccount">
+          <form className = "form" id = "updatePersonalInfo">
             <h1 className = "form__title">
               Update Personal Information for DormDash Account
             </h1>
@@ -170,14 +172,16 @@ const customer = () => {
               <div className = "form__input-error-message">
               </div>
             </div>
-            <button className = "form__button" id = "addressButton">
+            <button className = "form__button" id = "updatePersonalInfoButton">
               Submit Changes
             </button>
           </form>
         </div>
 
+        <input type = "radio" id = "addAddressInfo" name = "update_info_option" value = "addAddressInfo" class = "form-change-buttons"/>
+        <label for = "addAddressInfo" class = "radio-input-label">Add New Address Information</label>
         <div className = "container">
-          <form className = "form" id = "createAccount">
+          <form className = "form" id = "addAddressInfo">
             <h1 className = "form__title">
               Add Address Information
             </h1>
@@ -277,14 +281,16 @@ const customer = () => {
               <div className = "form__input-error-message">
               </div>
             </div>
-            <button className = "form__button" type = "submit" id = "submitButton">
+            <button className = "form__button" type = "submit" id = "addAddressInfoButton">
               Submit Changes
             </button>
           </form>
         </div>
 
+        <input type = "radio" id = "updateAddressInfo" name = "update_info_option" value = "updateAddressInfo" class = "form-change-buttons"/>
+        <label for = "updateAddressInfo" class = "radio-input-label">Update Existing Address Information</label>
         <div className = "container">
-          <form className = "form" id = "createAccount">
+          <form className = "form" id = "updateAddressInfo">
             <h1 className = "form__title">
               Update Address Information
             </h1>
@@ -389,7 +395,7 @@ const customer = () => {
               <div className = "form__input-error-message">
               </div>
             </div>
-            <button className = "form__button" type = "submit" id = "submitButton">
+            <button className = "form__button" type = "submit" id = "updateAddressInfoButton">
               Submit Changes
             </button>
           </form>

@@ -43,7 +43,7 @@ const menu = () => {
           </button>
         </a>
         <div>
-          <a href = "./shopping_cart">
+          <a href = "./shoppingCart">
             <button type = "button" class = "icon-button">
               <span class = "material-icons md-48">
                 shopping_cart
