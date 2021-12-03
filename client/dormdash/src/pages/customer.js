@@ -1,8 +1,49 @@
 import './main.css';
 import * as React from "react";
 
-
 const customer = () => {
+  const onClick1 = () => {
+  var btn_update_info = document.getElementById("updatePersonalInfo_div");
+  var btn_add_address = document.getElementById("addAddressInfo_div");
+  var btn_update_address = document.getElementById("updateAddressInfo_div");
+  if (btn_update_info.hidden == true) {
+    btn_update_info.hidden = false;
+    btn_add_address.hidden = true;
+    btn_update_address.hidden = true;
+  } else {
+    btn_update_info.hidden = true;
+    btn_add_address.hidden = true;
+    btn_update_address.hidden = true;
+  }}
+
+  const onClick2 = () => {
+  var btn_update_info = document.getElementById("updatePersonalInfo_div");
+  var btn_add_address = document.getElementById("addAddressInfo_div");
+  var btn_update_address = document.getElementById("updateAddressInfo_div");
+  if (btn_add_address.hidden == true) {
+    btn_update_info.hidden = true;
+    btn_add_address.hidden = false;
+    btn_update_address.hidden = true;
+  } else {
+    btn_update_info.hidden = true;
+    btn_add_address.hidden = true;
+    btn_update_address.hidden = true;
+  }}
+  
+  const onClick3 = () => {
+  var btn_update_info = document.getElementById("updatePersonalInfo_div");
+  var btn_add_address = document.getElementById("addAddressInfo_div");
+  var btn_update_address = document.getElementById("updateAddressInfo_div");
+  if (btn_update_address.hidden == true) {
+    btn_update_info.hidden = true;
+    btn_add_address.hidden = true;
+    btn_update_address.hidden = false;
+  } else {
+    btn_update_info.hidden = true;
+    btn_add_address.hidden = true;
+    btn_update_address.hidden = true;
+  }}
+
   return (
   <div>
     <head>
@@ -76,10 +117,10 @@ const customer = () => {
 
 
       <div class = "change-information-container">
-        <input type = "radio" id = "updatePersonInfo" name = "update_info_option" value = "updatePersonInfo" class = "form-change-buttons"/>
-        <label for = "updatePersonInfo" class = "radio-input-label">Update Personal Information</label>
-        <div className = "container">
-          <form className = "form" id = "updatePersonalInfo">
+        <input type = "radio" id = "updatePersonInfo_button" name = "update_info_option" value = "updatePersonInfo" onClick = {onClick1} class = "form-change-buttons"/>
+        <label for = "updatePersonInfo_button" class = "radio-input-label">Update Personal Information</label>
+        <div className = "container" hidden id = "updatePersonalInfo_div">
+          <form className = "form" id = "updatePersonalInfo_form">
             <h1 className = "form__title">
               Update Personal Information for DormDash Account
             </h1>
@@ -178,9 +219,9 @@ const customer = () => {
           </form>
         </div>
 
-        <input type = "radio" id = "addAddressInfo" name = "update_info_option" value = "addAddressInfo" class = "form-change-buttons"/>
-        <label for = "addAddressInfo" class = "radio-input-label">Add New Address Information</label>
-        <div className = "container">
+        <input type = "radio" id = "addAddressInfo_button" name = "update_info_option" value = "addAddressInfo" onClick = {onClick2} class = "form-change-buttons"/>
+        <label for = "addAddressInfo_button" class = "radio-input-label">Add New Address Information</label>
+        <div className = "container" hidden id = "addAddressInfo_div">
           <form className = "form" id = "addAddressInfo">
             <h1 className = "form__title">
               Add Address Information
@@ -287,9 +328,9 @@ const customer = () => {
           </form>
         </div>
 
-        <input type = "radio" id = "updateAddressInfo" name = "update_info_option" value = "updateAddressInfo" class = "form-change-buttons"/>
-        <label for = "updateAddressInfo" class = "radio-input-label">Update Existing Address Information</label>
-        <div className = "container">
+        <input type = "radio" id = "updateAddressInfo_button" name = "update_info_option" value = "updateAddressInfo" onClick = {onClick3}  class = "form-change-buttons"/>
+        <label for = "updateAddressInfo_button" class = "radio-input-label">Update Existing Address Information</label>
+        <div className = "container" hidden id = "updateAddressInfo_div">
           <form className = "form" id = "updateAddressInfo">
             <h1 className = "form__title">
               Update Address Information

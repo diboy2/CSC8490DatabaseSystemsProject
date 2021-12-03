@@ -36,7 +36,7 @@ const orderHistory = () => {
             </span>
           </button>
         </a>
-        <a herf = "./customer">
+        <a href = "./customer">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               account_circle

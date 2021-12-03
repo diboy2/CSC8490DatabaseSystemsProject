@@ -23,6 +23,11 @@ body {
   background : #FFFFFF;
 }
 
+.shopping-cart-payment-option {
+  margin : 2rem;
+  padding : 2rem;
+}
+
 .change-information-container {
   align-items : flex;
 }
