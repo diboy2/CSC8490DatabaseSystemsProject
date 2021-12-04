@@ -1,36 +1,66 @@
 import './main.css';
-import * as React from "react";
+import React, {useState} from 'react';
+import Axios from 'axios';
 
-const createAccount = () => {
+const getAddress = () => {
+  const [data, setData] = useState('');
+  const url = "http://localhost:3001/api/address";  
+
+  
+  function submit(e){
+    console.log(data);
+  
+    e.preventDefault();
+      Axios.post(url, {
+        address_name : data.address_name,
+        address2 : data.address2,
+        city: data.city,
+        state: data.state,
+        street : data.street,
+        zip_code : parseInt(data.zip_code),
+        address_type : data.address_type
+      }).then(res => {
+        console.log(res.data);
+      }
+      )         
+  }
+
+  function handle(e) {
+    const newData  = { ...data};
+    newData[e.target.id] = e.target.value;
+    setData(newData);   
+    console.log(newData);
+  }
+
   return (
   <body>
     <div className = "container">
-      <form className = "form" id = "createAccount" action = "./login">
+      <form className = "form" id = "createAccount" action = "./login" onSubmit={(e) => submit(e)}>
         <h1 className = "form__title">
           Create a DormDash Account
         </h1>
         <div className = "form__message--error">
         </div>
         <div className = "form__input-group">
-          <input type = "address" className = "form__input" autofocus placeholder = "Street Address">
+          <input type = "address" className = "form__input" autofocus placeholder = "Street Address"  onChange={(e) => handle(e)} value = {data.street} id = "street">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "address" className = "form__input" autofocus placeholder = "Address Line 2">
+          <input type = "address" className = "form__input" autofocus placeholder = "Address Line 2"  onChange={(e) => handle(e)} value = {data.address2} id = "address2">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "City">
+          <input type = "text" className = "form__input" autofocus placeholder = "City" onChange={(e) => handle(e)} value = {data.city} id = "city">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <select className = "form__input" autofocus placeholder = "State">
+          <select className = "form__input" autofocus placeholder = "State" onChange={(e) => handle(e)} value = {data.state} id = "state">
             <option value="" disabled selected>Select a State</option>
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
@@ -86,13 +116,13 @@ const createAccount = () => {
           </select>
         </div>
         <div className = "form__input-group">
-          <input type = "zip" className = "form__input" autofocus placeholder = "Zip Code">
+          <input type = "zip" className = "form__input" autofocus placeholder = "Zip Code" onChange={(e) => handle(e)} value = {data.zip_code} id = "zip_code">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <select className = "form__input" autofocus placeholder = "Address Type">
+          <select className = "form__input" autofocus placeholder = "Address Type" onChange={(e) => handle(e)} value = {data.address_type} id = "address_type">
             <option value="" disabled selected>Select an Address Type</option>
             <option value="Billing">Billing</option>
             <option value="Shipping">Shipping</option>
@@ -100,7 +130,7 @@ const createAccount = () => {
           </select>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "Address Name">
+          <input type = "text" className = "form__input" autofocus placeholder = "Address Name" onChange={(e) => handle(e)} value = {data.address_name} id = "address_name" >
           </input>
           <div className = "form__input-error-message">
           </div>
@@ -120,4 +150,4 @@ const createAccount = () => {
   )
 };
 
-export default createAccount
+export default getAddress

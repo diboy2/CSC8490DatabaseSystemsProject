@@ -1,99 +1,137 @@
 import './main.css';
-import * as React from "react";
+import React, {useState} from 'react';
+import Axios from 'axios';
 
 const createAccount = () => {
+  const [data, setData] = useState('');
+  const url = "http://localhost:3001/api/signup";  
+
+    // first_name: "",
+    //   middle_name: "",
+    //   last_name: "",
+    //   buiding_id: "2",
+    //   room_num: "",
+    //   phone: "",
+    //   email: ""
+  
+  function submit(e){
+    console.log(data);
+  
+    e.preventDefault();
+      Axios.post(url, {
+        first_name : data.first_name,
+        middle_name : data.middle_name,
+        last_name: data.last_name,
+        building_id: parseInt(data.buiding_id),
+        room_num : data.room_num,
+        phone : parseInt(data.phone),
+        email : data.email
+      }).then(res => {
+        console.log(res.data);
+      }
+      )         
+  }
+
+  function handle(e) {
+    const newData  = { ...data};
+    newData[e.target.id] = e.target.value;
+    setData(newData);   
+  }
+
+
   return (
   <body>
     <div className = "container">
-      <form className = "form" id = "getPersonalInfo" action = "./getAddress">
+
+      <form className = "form" id = "getPersonalInfo" onSubmit={(e) => submit(e)} action = "./getAddress" >
         <h1 className = "form__title">
           Create a DormDash Account
         </h1>
         <div className = "form__message--error">
         </div>
         <div className = "form__input-group">
-          <input type = "username" className = "form__input" autofocus placeholder = "DormDash Username">
+          <input type = "username" className = "form__input" autofocus placeholder = "DormDash Username" id = "username">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "password" className = "form__input" autofocus placeholder = "DormDash Password">
+          <input type = "password" className = "form__input" autofocus placeholder = "DormDash Password" id = "password">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "First Name">
+          <input onChange={(e) => handle(e)} value = {data.first_name} type = "text" className = "form__input" autofocus placeholder = "First Name" id = "first_name">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "Middle Name">
+          <input onChange={(e) => handle(e)} value = {data.middle_name} type = "text" className = "form__input" autofocus placeholder = "Middle Name" id = "middle_name">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "Last Name">
+          <input onChange={(e) => handle(e)} value = {data.last_name} type = "text" className = "form__input" autofocus placeholder = "Last Name" id = "last_name">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "email" className = "form__input" autofocus placeholder = "Email Address">
+          <input onChange={(e) => handle(e)} value = {data.email} type = "email" className = "form__input" autofocus placeholder = "Email Address" id = "email">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "tel" className = "form__input" autofocus placeholder = "Phone Number">
+          <input onChange={(e) => handle(e)} value = {data.phone} type = "tel" className = "form__input" autofocus placeholder = "Phone Number" id = "phone">
           </input>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <select className = "form__input" autofocus placeholder = "Building">
-            <option value="" disabled selected>Select a Dorm Building</option>
-            <option value = "Alumni Hall">Alumni Hall</option>
-            <option value = "Austin Hall">Austin Hall</option>
-            <option value = "Corr Hall">Corr Hall</option>
-            <option value = "Delurey Hall">Delurey Hall</option>
-            <option value = "Fedigan Hall">Fedigan Hall</option>
-            <option value = "Moriarty Hall">Moriarty Hall</option>
-            <option value = "O'Dwyer Hall">O'Dwyer Hall</option>
-            <option value = "Sheehan Hall">Sheehan Hall</option>
-            <option value = "Simpson Hall">Simpson Hall</option>
-            <option value = "Sullivan Hall">Sullivan's Hall</option>
-            <option value = "St. Rita’s Hall">St. Rita's Hall</option>
-            <option value = "Caughlin Hall">Caughlin Hall</option>
-            <option value = "Good Counsel Hall">Good Counsel Hall</option>
-            <option value = "McGuire Hall">McGuire Hall</option>
-            <option value = "Stanford Hall">Stanford Hall</option>
-            <option value = "Katharine Hall">Katharine Hall</option>
-            <option value = "St. Monica Hall">St. Monica Hall</option>
-            <option value = "Farley Hall">Farley Hall</option>
-            <option value = "Gallen Hall">Gallen Hall</option>
-            <option value = "Jackson Hall">Jackson Hall</option>
-            <option value = "Klekotka Hall">Klekotka Hall</option>
-            <option value = "Moulden Hall">Moulden Hall</option>
-            <option value = "Rudolph Hall">Rudolph Hall</option>
-            <option value = "St. Clare Hall">St. Clare Hall</option>
-            <option value = "St. Mary's Hall">St. Mary's Hall</option>
-            <option value = "Welsh Hall">Welsh Hall</option>
-            <option value = "Arch Hall">Arch Hall</option>
-            <option value = "Trinity Hall">Trinity Hall</option>
-            <option value = "Canon Hall">Canon Hall</option>
-            <option value = "Chapter Hall">Chapter Hall</option>
-            <option value = "Cupola Hall">Cupola Hall</option>
-            <option value = "Friar Hall">Friar Hall</option>
+          <select onChange={(e) => handle(e)} value = {data.building_id} className = "form__input" autofocus placeholder = "Building" id ="buiding_id">
+            <option value="0" disabled selected>Select a Dorm Building</option>
+            <option value = "1">Alumni Hall</option>
+            <option value = "2">Austin Hall</option>
+            <option value = "3">Corr Hall</option>
+            <option value = "4">Delurey Hall</option>
+            <option value = "5">Fedigan Hall</option>
+            <option value = "6">Moriarty Hall</option>
+            <option value = "7">O'Dwyer Hall</option>
+            <option value = "8">Sheehan Hall</option>
+            <option value = "9">Simpson Hall</option>
+            <option value = "10">Sullivan's Hall</option>
+            <option value = "11">St. Rita's Hall</option>
+            <option value = "12">Caughlin Hall</option>
+            <option value = "13">Good Counsel Hall</option>
+            <option value = "14">McGuire Hall</option>
+            <option value = "15">Stanford Hall</option>
+            <option value = "16">Katharine Hall</option>
+            <option value = "17">St. Monica Hall</option>
+            <option value = "18">Farley Hall</option>
+            <option value = "19">Gallen Hall</option>
+            <option value = "20">Jackson Hall</option>
+            <option value = "21">Klekotka Hall</option>
+            <option value = "22">Moulden Hall</option>
+            <option value = "23">Rudolph Hall</option>
+            <option value = "24">St. Clare Hall</option>
+            <option value = "25">St. Mary's Hall</option>
+            <option value = "26">Welsh Hall</option>
+            <option value = "27">Arch Hall</option>
+            <option value = "28">Trinity Hall</option>
+            <option value = "29">Canon Hall</option>
+            <option value = "30">Chapter Hall</option>
+            <option value = "31">Cupola Hall</option>
+            <option value = "32">Friar Hall</option>
           </select>
           <div className = "form__input-error-message">
           </div>
         </div>
         <div className = "form__input-group">
-          <input type = "text" className = "form__input" autofocus placeholder = "Room Number">
+          <input type = "text" onChange={(e) => handle(e)} value = {data.room_num} className = "form__input" autofocus placeholder = "Room Number" id = "room_num">
           </input>
           <div className = "form__input-error-message">
           </div>
@@ -113,4 +151,4 @@ const createAccount = () => {
   )
 };
 
-export default createAccount
+export default createAccount;
