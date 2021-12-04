@@ -2,20 +2,33 @@ const express = require('express');
 const app = express();
 app.use(express.json())
 const oracledb = require('oracledb');
-let connection;
+oracledb.initOracleClient({libDir: "C:\\Users\\Bikal\\Desktop\\Fall 2021\\oracles\\instantclient_21_3"});
+
+app.use(function(req, res, next) {
+   res.header(`Access-Control-Allow-Origin`, `*`)
+   res.header(`Access-Control-Allow-Credentials`, true)
+   res.header(
+      `Access-Control-Allow-Headers`,
+      `Origin, X-Requested-With, Content-Type, Accept`
+   )
+   next();
+});
+
 
 async function fetchData(req, res) {
+  let connection;
+  
   try {
-    let row_count;
+    let row_count; 
 
-    connection = await fetchConnection();
+    connection = await oracledb.getConnection({ user: "blamichh", password: "Fa02307519", connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))" });
+
     console.log("Successfully connected to Oracle Database");
-
     let query = `SELECT a.state, count(a.state) from address a group by a.state `
 
     // let query = 'variable cursor_output refcursor; exec fetchdata(:cursor_output)';
 
-    result = await connection.execute( query, [],
+    result = await connection.execute( query, [],  
      function(err, result) {
         if (err) {
           return(err.message);
@@ -37,19 +50,24 @@ async function fetchData(req, res) {
     }
   }
 }
-const simpleExecute= (statement, binds = [], opts = {}) => {
+
+const  simpleExecute= (statement, binds = [], opts = {}) => {
   return new Promise(async (resolve, reject) => {
     let conn;
 
     try {
-      conn = await oracledb.getConnection({
-        user: "ACAGAANA",
-        password: "Fa00764577",
-        connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))"
-      });;
+      conn = await oracledb.getConnection({ 
+        user: "blamichh", 
+        password: "Fa02307519", 
+        connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))" }
+        );
+
       conn.autoCommit = true;
 
+      console.log(statement);
+  
       const result = await conn.execute(statement, binds, opts);
+
       conn.commit();
       resolve(result);
     } catch (err) {
@@ -66,6 +84,7 @@ const simpleExecute= (statement, binds = [], opts = {}) => {
   });
 }
 
+
 app.get("/api/building", async (req, res) => {
   console.log("pasing through");
   const example_building = {
@@ -77,6 +96,7 @@ app.get("/api/building", async (req, res) => {
   console.log(example_building);
   res.send(JSON.stringify(example_building));
 });
+
 app.get("/api/admin/", (req, res) => {
 	fetchData(req, res);
 });
@@ -92,15 +112,7 @@ app.post("/api/signup", async (req, res) => {
     email
   }  = req.body;
   console.log("pasing through", req.body);
-  // const example_customer = {
-  //   first_name: "bob",
-  //   middle_name: "the",
-  //   last_name: "builder",
-  //   building_id: 3,
-  //   room_num: "B10",
-  //   phone: 4342348695,
-  //   email: "test@gmail.com",
-  // };
+
   const customer = {
     first_name,
     middle_name,
@@ -110,19 +122,121 @@ app.post("/api/signup", async (req, res) => {
     phone,
     email
   };
-  const statement = `Insert INTO CUSTOMER (First_name,Middle_name,Last_name,Building_id,Room_num,Phone,Email) ` +
-  `Values (:first_name, :middle_name, :last_name, :building_id, :room_num, :phone, :email) returning customer_id
-  into :customer_id`;
-  // const statement = `Insert into CUSTOMER Values (7, 'E12', 8153074332, 'kyoko.vajnar@villanova.edu','Kyoko' , 'X' , 'Vajnar' , 30   )`;
-  // console.log("executing statement");
-  customer.customer_id = {
-    dir: oracledb.BIND_OUT,
-    type: oracledb.NUMBER
-  }
-  const result = await simpleExecute(statement, customer);
-  customer.customer_id = result.outBinds.customer_id[0];
-  res.send(JSON.stringify(customer));
-});
+
+  let connection;
+  let insert_id;
+  try{
+  connection = await oracledb.getConnection({ user: "blamichh", password: "Fa02307519", connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))" });
+  insert_id = await connection.execute(
+      `SELECT max(customer_id)
+       FROM customer`,
+      [],  
+     async function(err, result) {
+        if (err) {
+          console.log(err.message);       
+          return;
+        }              
+
+        insert_id = result.rows[0][0] + 1;
+        customer.customer_id = insert_id;
+
+        console.log('Attemtping to insert to customer id: ', insert_id);
+
+        const statement = `Insert INTO CUSTOMER (First_name,Middle_name,Last_name,Building_id,Room_num,Phone,Email, Customer_id) ` +
+        `Values (:first_name, :middle_name, :last_name, :building_id, :room_num, :phone, :email, :customer_id) `;
+
+      try {
+        customer.customer_id = insert_id;
+        const result = await simpleExecute(statement, customer);
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify(customer));
+        } catch (err) {
+          console.log(err);
+          res.send(err.message);
+        } finally {
+          console.log('Finally for insert into customer ::: ');       
+        }
+     });
+}
+catch(err){
+  console.log(err.message);
+}finally{
+  console.log(' Finally');
+}
+  connection.close();
+  
+  });
+
+app.post("/api/address", async (req, res) => {
+  const {
+    address_name, 
+    address2,
+    city,
+    state,
+    street,
+    zip_code,
+    address_type,   
+    customer_id 
+  }  = req.body;
+  console.log("pasing through address insert endpoint", req.body);
+
+  const address = {
+    address_name, 
+    address2,
+    city,
+    state,
+    street,
+    zip_code,
+    address_type,
+    customer_id
+  };
+
+  let connection;
+  let insert_id;
+  try{
+  connection = await oracledb.getConnection({ user: "blamichh", password: "Fa02307519", connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))" });
+  insert_id = await connection.execute(
+      `select max(address_id) from address`,
+      [],  
+     async function(err, result) {
+        if (err) {
+          console.log(err.message);       
+          return;
+        }              
+
+        insert_id = result.rows[0][0] + 1;        
+
+        console.log('Attemtping to insert to address id: ', insert_id);
+
+        const statement = `Insert INTO ADDRESS (address_id, address_name,address2,city,state,street,zip_code,address_type, customer_id) ` +
+        `Values (:address_id, :address_name,:address2,:city,:state,:street,:zip_code,:address_type, :customer_id)`;
+
+      try {
+        address.address_id = insert_id;
+        console.log(address);
+        const result = await simpleExecute(statement, address);     
+        res.header("Access-Control-Allow-Origin", "*");
+        res.send(JSON.stringify(address));
+        } catch (err) {
+          console.log(err);
+          res.send(err.message);
+        } finally {
+          console.log('Finally for insert into address ');       
+        }
+     });
+}
+catch(err){
+  console.log(err.message);
+}finally{
+  console.log(' Finally');
+}
+  connection.close();
+  
+  });
+
+
+  
+
 
 app.post("/api/shopping_cart", (req, res) => {
   const shoppingCart = {
