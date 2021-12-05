@@ -1,10 +1,14 @@
-import customer from "./customer";
-import app from "./app";
+import dotenv from 'dotenv'
+dotenv.config();
+import paymentInformation from "./paymentInformation.js";
+import address from "./address.js";
+import customer from "./customer.js";
+import app from "./app.js";
 
 customer(app);
+address(app);
+paymentInformation(app);
 
-
-//Insert into Shopping_cart (Shopping_cart_id,Quantity,Food_id) values (1,3,739);
 app.listen(3001, () => {
 	console.log("running on port 3001");
 });
