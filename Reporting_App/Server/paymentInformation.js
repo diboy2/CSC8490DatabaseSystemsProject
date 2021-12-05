@@ -40,10 +40,14 @@ export default function(app) {
 	});
 
 	app.get("/api/payment_instrument", async (req, res) => {
-		const statement = `SELECT PAYMENT_TYPE_ID "payment_id", PAYMENT_TYPE_NAME "payment_type_name" FROM PAYMENT_INSTRUMENT`;
-		const result = await simpleExecute(statement);
+		const statement = `SELECT * FROM PAYMENT_INSTRUMENT`;
+		const result = await simpleExecute(statement, {}, {resultSet: true});
+		while ((row = await result.resultSet.getRow())) {
+			console.log("getRow(): row " + i++);
+			console.log(row);
+		  }
 		res.header("Access-Control-Allow-Origin", "*");
-		res.send(JSON.stringify(result.rows));
+		res.send(JSON.stringify(result));
 	});
 	// const card = {
 	// 	card_name,
