@@ -1,13 +1,50 @@
 import { simpleExecute, getNextInsertId } from "./dbUtil.js";
 
 export default function(app) {
-	const insertIdQuery = `SELECT max(customer_id) FROM customer`;
+
+	// only vendor details for now
+	app.post("/api/payment_details", async (req, res) => {
+		const insertPaymentDetailsIdQuery = `SELECT max(payment_details_id) FROM payment_details`;
+		const {
+			customer_id,
+			payment_type_id,
+			details
+		} = req.body;
+		const {
+			v_name,
+			v_email
+		} = details;
+		const payment_details_id = await getNextInsertId(insertPaymentDetailsIdQuery);
+		const payment_details = {
+			customer_id,
+			payment_type_id,
+			payment_details_id
+		};
+
+		const detailsStatement = `Insert into
+			Payment_Details (Payment_Details_id,Customer_id,Payment_type_id)
+			values (:payment_details_id,:customer_id,:payment_type_id)`
+		await simpleExecute(detailsStatement, payment_details);
+		const vendorDetails = {
+			v_name,
+			v_email,
+			payment_details_id
+		};
+		const vendorDetailsStatement = `Insert into
+			Vendor_Details (VName,VEmail,Payment_Details_id)
+			values ( :v_name , :v_email , :payment_details_id)
+		`;
+		const result = await simpleExecute(vendorDetailsStatement, vendorDetails);
+		res.header("Access-Control-Allow-Origin", "*");
+		res.send(JSON.stringify(vendorDetails));
+	});
+
 	app.get("/api/payment_instrument", async (req, res) => {
-		const statement = `SELECT PAYMENT_TYPE_ID "payment_id", PAYMENT_TYPE_NAME "payment_type_name" FROM PAYMENT_INSTRUMENT WHERE payment_type_id = 2`;
+		const statement = `SELECT PAYMENT_TYPE_ID "payment_id", PAYMENT_TYPE_NAME "payment_type_name" FROM PAYMENT_INSTRUMENT`;
 		const result = await simpleExecute(statement);
 		res.header("Access-Control-Allow-Origin", "*");
 		res.send(JSON.stringify(result.rows));
-	})
+	});
 	// const card = {
 	// 	card_name,
 	// 	card_number,
