@@ -24,18 +24,20 @@ export default function(app) {
       dining_place_id
     };
     const statement = `SELECT
+        dp.dining_name,
         m.menu_type,
         f.food_price,
         f.food_name
-      FROM MENU m, Menu_FOOD_BRIDGE mfb, FOOD f
+      FROM DINING_PLACE dp, MENU m, Menu_FOOD_BRIDGE mfb, FOOD f
         WHERE m.menu_id = mfb.menu_id
         AND mfb.food_id = f.food_id
-        AND m.dining_id = :dining_place_id
+        AND m.dining_id = dp.dining_id
+        AND dp.dining_id = :dining_place_id
     `;
     const result = await simpleExecute(statement,bindings, {
       outFormat: oracledb.OUT_FORMAT_OBJECT
     });
-    res.send(JSON.stringify(result));
+    res.send(JSON.stringify(result.rows));
   });
 }
 
