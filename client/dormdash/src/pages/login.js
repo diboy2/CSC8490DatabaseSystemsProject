@@ -1,7 +1,13 @@
 import './main.css';
-import * as React from "react";
+import React, {useContext} from 'react'
+import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
 
-const login = () => {
+const Login = () => {
+  const dispatch = useContext(GlobalDispatchContext);
+  const state = useContext(GlobalStateContext);
+  console.log(state);
+
+  
   return (
   <body>
     <div className = "container">
@@ -34,8 +40,10 @@ const login = () => {
         </p>
         <p className = "form__text">
           <a className = "form__link" href = "./createAccount" id = "linkCreateAccount">
-            New to DormDash? Create an Account.
+            New to DormDash? Create an Account. {state.dining_place}
           </a>
+
+        
         </p>
       </form>
     </div>
@@ -44,4 +52,4 @@ const login = () => {
   )
 };
 
-export default login
+export default Login

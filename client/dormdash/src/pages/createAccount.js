@@ -35,7 +35,8 @@ const createAccount = () => {
   function handle(e) {
     const newData  = { ...data};
     newData[e.target.id] = e.target.value;
-    setData(newData);   
+    setData(newData); 
+    console.log(newData);  
   }
 
 

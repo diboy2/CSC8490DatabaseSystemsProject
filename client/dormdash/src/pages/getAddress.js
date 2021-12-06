@@ -35,7 +35,7 @@ const getAddress = () => {
   return (
   <body>
     <div className = "container">
-      <form className = "form" id = "createAccount" action = "./login" onSubmit={(e) => submit(e)}>
+      <form className = "form" id = "createAccount" action = "./getAddress" onSubmit={(e) => submit(e)}>
         <h1 className = "form__title">
           Create a DormDash Account
         </h1>

@@ -1,8 +1,21 @@
 import './main.css';
-import * as React from "react";
 
+import React, {useContext} from 'react'
+import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
 
-const welcome = () => {
+const Welcome = () => {
+const dispatch = useContext(GlobalDispatchContext);
+const state = useContext(GlobalStateContext);
+
+console.log(state);
+
+function updateState(obj){
+
+  dispatch({type : 'ADD_ITEM', payload : obj})    
+  console.log(state);
+    
+  }
+
   return (
   <div>
     <head>
@@ -68,13 +81,13 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">St. Mary's Dining Hall</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "1 St. Mary's Hall - Dining_Hall" onClick={e => updateState(e.target.id)}> View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Second Storey</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "2 St. Mary's Hall - Dining_Hall"  onClick = {e => {dispatch({type : 'ADD_ITEM', payload : e.target.id})}}>View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -91,7 +104,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Dougherty Dining Hall</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "3 Doherty Hall - Dougherty Dining Hall"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -108,13 +121,13 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Curley Exchange</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "4 Bartley Hall - The Curley Exchange"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "5 Bartley Hall - Holy Grounds"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -131,7 +144,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "6 CEER - Holy Grounds"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -146,27 +159,27 @@ const welcome = () => {
             <div class="dining-item">
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
-                  <span class="dining-item-name">Holy Grounds</span>
+                  <span class="dining-item-name" >Holy Grounds</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "7 Connelly Hall - Holy Grounds"  onClick = "updateState(this.id)" >View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Belle Air Terrace</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "8 Connelly Hall - Belle Air Terrace"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Freshens</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "9 Connelly Hall - Freshens"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Connelly Convenience</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "10 Connelly Hall - Connelly Convenience"  onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -183,7 +196,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Recovery Room</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "11 Driscoll Hall - The Recovery Room" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -200,7 +213,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Cafe Nova</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "12 Cafe Nova - Cafe Nova" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -217,7 +230,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "13 Falvey Memorial Library - Holy Grounds" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -234,7 +247,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">St. Augustine Cafe</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "14 St. Augustine Center for the liberal arts - St Augustine Cafe" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -251,13 +264,13 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Court</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "15 Donahue Hall - The Court" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Donahue Market</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "16 Donahue Hall - Donahue Market" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -274,7 +287,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "17 The Commons - Holy Grounds" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -291,7 +304,7 @@ const welcome = () => {
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Law School Cafe</span>
                   <a href = "./menu">
-                    <button class="dining-menu-button">View Menu</button>
+                    <button class="dining-menu-button" id = "18 Law School - The Law School Cafe" onClick = "updateState(this.id)">View Menu</button>
                   </a>
                 </h3>
               </div>
@@ -305,4 +318,4 @@ const welcome = () => {
   )
 };
 
-export default welcome
+export default Welcome
