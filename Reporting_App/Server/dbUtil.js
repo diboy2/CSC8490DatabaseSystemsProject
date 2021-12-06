@@ -1,5 +1,4 @@
 import oracledb from 'oracledb';
-oracledb.initOracleClient({libDir: process.env.ORACLE_CLIENT_DIR && "C:\\Users\\Bikal\\Desktop\\Fall 2021\\oracles\\instantclient_21_3"});
 
 export const executeMultiple = (statement, binds = [], opts = {}) => {
   return new Promise(async (resolve, reject) => {
@@ -7,8 +6,7 @@ export const executeMultiple = (statement, binds = [], opts = {}) => {
 
     try {
       conn = await oracledb.getConnection({
-        user: process.env.USERNAME,
-        password: process.env.PASSWORD,
+        user: "blamichh", password: "Fa02307519",
         connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))"
       });
       conn.autoCommit = true;
@@ -39,8 +37,7 @@ export const simpleExecute = (statement, binds = [], opts = {}) => {
 
     try {
       conn = await oracledb.getConnection({
-        user: process.env.USERNAME,
-        password: process.env.PASSWORD,
+        user: "blamichh", password: "Fa02307519",
         connectionString: "(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = csdb2.csc.villanova.edu)(PORT = 1521))(CONNECT_DATA =(SID= ORCL)))"
       });
       conn.autoCommit = true;

@@ -1,3 +1,6 @@
+import oracledb from 'oracledb';
+
+// oracledb.initOracleClient({libDir: process.env.ORACLE_CLIENT_DIR && "C:\\Users\\Bikal\\Desktop\\Fall 2021\\oracles\\instantclient_21_3"});
 
 async function fetchData(req, res) {
   let connection;
@@ -18,7 +21,7 @@ async function fetchData(req, res) {
           return(err.message);
         }
         console.log(result.rows);
-        res.header("Access-Control-Allow-Origin", "*");
+        // res.header("Access-Control-Allow-Origin", "*");
         return(res.send(JSON.stringify(result.rows, null, 2)));
      });
 
