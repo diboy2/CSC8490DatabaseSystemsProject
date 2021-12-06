@@ -7,7 +7,6 @@ const makeReservation = async ({ customer_id, shopping_cart_id}) => {
     dir: oracledb.BIND_OUT,
     type: oracledb.NUMBER
   };
-  console.log("make reservation", bindings);
   const procedureStatement = `BEGIN CALCULATE_GRAND_TOTAL(:shopping_cart_id, :reservation_id);END;`
   const result = await simpleExecute(procedureStatement, bindings);
   const bridgeStatement = `INSERT INTO

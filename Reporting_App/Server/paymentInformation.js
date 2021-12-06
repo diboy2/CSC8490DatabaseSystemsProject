@@ -1,3 +1,4 @@
+import oracledb from 'oracledb';
 import { simpleExecute, getNextInsertId } from "./dbUtil.js";
 
 const insertCardDetails = async (cardDetails) => {
