@@ -1,8 +1,51 @@
 import { simpleExecute, getNextInsertId } from "./dbUtil.js";
 
-export default function(app) {
+const insertCardDetails = async (cardDetails) => {
+	const {
+		payment_details_id,
+		address_id,
+		card_name,
+		card_number,
+		security_code,
+		exp_month,
+		exp_year
+	} = cardDetails;
+	const bindings = {
+		payment_details_id,
+		address_id,
+		card_name,
+		card_number,
+		security_code,
+		exp_month,
+		exp_year
+	};
+	const cardDetailsStatement = `Insert into
+		Card_Details (Card_Name,Card_number,Security_code,Exp_Month,Exp_Year,Address_id,Payment_details_id)
+		values (:card_name, :card_number, :security_code, :exp_month, :exp_year, :address_id, :payment_details_id)
+	`;
+	return await simpleExecute(cardDetailsStatement, bindings);
+};
 
-	// only vendor details for now
+const insertVendorDetails = async (vendorDetails) => {
+	const {
+		v_name,
+		v_email,
+		payment_details_id
+	} = vendorDetails;
+	const bindings = {
+		v_name,
+		v_email,
+		payment_details_id
+	};
+	const vendorDetailsStatement = `Insert into
+		Vendor_Details (VName,VEmail,Payment_Details_id)
+		values (:v_name, :v_email, :payment_details_id)
+	`;
+	return await simpleExecute(vendorDetailsStatement, bindings);
+};
+
+
+export default function(app) {
 	app.post("/api/payment_details", async (req, res) => {
 		const insertPaymentDetailsIdQuery = `SELECT max(payment_details_id) FROM payment_details`;
 		const {
@@ -10,33 +53,49 @@ export default function(app) {
 			payment_type_id,
 			details
 		} = req.body;
-		const {
-			v_name,
-			v_email
-		} = details;
 		const payment_details_id = await getNextInsertId(insertPaymentDetailsIdQuery);
 		const payment_details = {
 			customer_id,
 			payment_type_id,
 			payment_details_id
 		};
-
 		const detailsStatement = `Insert into
 			Payment_Details (Payment_Details_id,Customer_id,Payment_type_id)
 			values (:payment_details_id,:customer_id,:payment_type_id)`
 		await simpleExecute(detailsStatement, payment_details);
-		const vendorDetails = {
-			v_name,
-			v_email,
-			payment_details_id
-		};
-		const vendorDetailsStatement = `Insert into
-			Vendor_Details (VName,VEmail,Payment_Details_id)
-			values ( :v_name , :v_email , :payment_details_id)
-		`;
-		const result = await simpleExecute(vendorDetailsStatement, vendorDetails);
-		res.header("Access-Control-Allow-Origin", "*");
-		res.send(JSON.stringify(vendorDetails));
+		if(payment_type_id > 3 ) {
+			const {
+				v_name,
+				v_email
+			} = details;
+			const vendorResults = await insertVendorDetails({
+				payment_details_id,
+				v_name,
+				v_email
+			});
+			res.header("Access-Control-Allow-Origin", "*");
+			res.send(JSON.stringify(vendorResults));
+		} else {
+			const {
+				address_id,
+				card_name,
+				card_number,
+				security_code,
+				exp_month,
+				exp_year
+			} = details;
+			const cardResults = await insertCardDetails({
+				payment_details_id,
+				address_id,
+				card_name,
+				card_number,
+				security_code,
+				exp_month,
+				exp_year
+			});
+			res.header("Access-Control-Allow-Origin", "*");
+			res.send(JSON.stringify(cardResults));
+		}
 	});
 
 	app.get("/api/payment_instruments", async (req, res) => {
@@ -44,52 +103,10 @@ export default function(app) {
 			pi.payment_type_id "payment_type_id",
 			pi.payment_type_name "payment_type_name"
 			FROM payment_instrument pi `;
-		const result = await simpleExecute(statement, {});
+		const result = await simpleExecute(statement, {}, {
+			outFormat: oracledb.OUT_FORMAT_OBJECT
+		  });
 		res.header("Access-Control-Allow-Origin", "*");
 		res.send(JSON.stringify(result.rows));
 	});
-	// const card = {
-	// 	card_name,
-	// 	card_number,
-	// 	security_code,
-	// 	exp_month,
-	// 	exp_year,
-	// 	address: {
-	// 		address_name,
-	// 		address2,
-	// 		city,
-	// 		state,
-	// 		street,
-	// 		zip_code,
-	// 		address_type,
-	// 		customer_id
-	// 	}
-	// };
-	// const vendor =
-	// const insertCard = `
-	// 	Insert into Card_Details (Card_Name,Card_number,Security_code,Exp_Month,Exp_Year,Address_id,Payment_details_id)
-	// 	values (:card_name,:card_number,:security_code,:exp_month,exp_year,:address_id,payment_details_id);
-	// `;
-	// const insertVendor = `
-	// Insert into Vendor_Details (VName,VEmail,Payment_Details_id)
-	// 	values ( 'Cashapp' , 'jayna@cashapp.com' ,1);
-	// `
-	// app.post("api/paymentInformation", async (req, res) => {
-	// 	const {
-	// 		payment_instrument_id,
-	// 		payment_details
-	// 	} = req.body;
-	// 	if(payment_instrument_id < 4) {
-
-	// 	}
-	// 	switch(payment_instrument) {
-	// 		case 'American Express':
-	// 		case 'Visa':
-	// 		case 'Discover':
-	// 		case 'Mastercard':
-
-	// 		default:
-
-	// 	}
-	// });
 }

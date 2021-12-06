@@ -9,7 +9,9 @@ export default function(app) {
       FROM DINING_PLACE dp, BUILDING b
       WHERE dp.building_id = b.building_id
     `;
-    const result = await simpleExecute(statement);
+    const result = await simpleExecute(statement, {}, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     res.send(JSON.stringify(result.rows));
   });
 
@@ -28,7 +30,9 @@ export default function(app) {
         WHERE m.menu_id = mfb.menu_id
         AND mfb.food_id = f.food_id
     `;
-    const result = await simpleExecute(statement);
+    const result = await simpleExecute(statement,{}, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
     res.send(JSON.stringify(result));
   });
 }
