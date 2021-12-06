@@ -39,5 +39,27 @@ export default function(app) {
     });
     res.send(JSON.stringify(result.rows));
   });
+
+  app.get("/api/dining_place/:dining_place_id/delivery_options", async (req, res) => {
+    const {
+      dining_place_id
+    } = req.params;
+    const bindings = {
+      dining_place_id
+    };
+    const statement = `SELECT
+        dp.dining_name "dining_name",
+        dd.delivery_id "delivery_id",
+        dd.delivery_type "delivery_type"
+      FROM DELIVERY_DETAILS dd, DINING_PLACE dp
+        WHERE dd.dining_id = dp.dining_id
+        AND dp.dining_id = :dining_place_id
+    `;
+    const result = await simpleExecute(statement, bindings, {
+      outFormat: oracledb.OUT_FORMAT_OBJECT
+    });
+    res.send(JSON.stringify(result.rows));
+  });
+
 }
 
