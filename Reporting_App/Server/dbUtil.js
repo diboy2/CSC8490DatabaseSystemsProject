@@ -13,8 +13,8 @@ export const executeMultiple = (statement, binds = [], opts = {}) => {
       });
       conn.autoCommit = true;
 
-      console.log(statement);
       conn.commit();
+      opts.outFormat = oracledb.OUT_FORMAT_OBJECT;
       const result = await conn.executeMany(statement, binds, opts);
 
       conn.commit();
@@ -46,7 +46,7 @@ export const simpleExecute = (statement, binds = [], opts = {}) => {
       conn.autoCommit = true;
 
       console.log(statement);
-
+      opts.outFormat = oracledb.OUT_FORMAT_OBJECT;
       const result = await conn.execute(statement, binds, opts);
 
       conn.commit();

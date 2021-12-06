@@ -1,3 +1,4 @@
+import oracledb from 'oracledb';
 
 async function fetchData(req, res) {
   let connection;
@@ -12,7 +13,7 @@ async function fetchData(req, res) {
 
     // let query = 'variable cursor_output refcursor; exec fetchdata(:cursor_output)';
 
-    result = await connection.execute( query, [],
+    result = await connection.execute( query, {},
      function(err, result) {
         if (err) {
           return(err.message);
