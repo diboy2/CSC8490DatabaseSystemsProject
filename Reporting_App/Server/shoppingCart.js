@@ -17,6 +17,7 @@ export default function(app) {
       shopping_cart_id
     };
 
+    console.log(req.body);
     const statement = `Insert INTO SHOPPING_CART (food_id,quantity,dining_place,shopping_cart_id) ` +
       `Values (:food_id,:quantity,:dining_place,:shopping_cart_id) `;
     const result = await simpleExecute(statement, shopping_cart);
@@ -41,8 +42,33 @@ export default function(app) {
       res.send(JSON.stringify(output));
     }
 
+  });
+
+  app.post("/api/getShoppingCart", async (req, res) => {    
+    console.log(req.body);
+     const {
+      shopping_cart_id
+    }  = req.body;
+
+    const statement = `select f.food_name,f.food_price, s.quantity, s.dining_place, s.subtotal from shopping_cart s
+    inner join food f on s.food_id = f.food_id
+      where s.shopping_cart_id = ${shopping_cart_id}`;
+    console.log(statement);
+
+    const result = await simpleExecute(statement);
+
+    const output = result.rows;
+    console.log(output);
+
+    if(output === null){
+      res.send(JSON.stringify(0));
+    }
+    else{
+      res.send(JSON.stringify(output));
+    }
 
   });
+
 };
 
 
