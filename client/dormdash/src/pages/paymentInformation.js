@@ -1,6 +1,10 @@
 import "./main.css";
 import * as React from "react";
 
+import { NavLink, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {  Link } from 'gatsby';
+import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
+
 
 const customer = () => {
 
@@ -177,56 +181,56 @@ const customer = () => {
 
     <body>
       <div class = "dormdash-menu-buttons">
-        <a href = "./welcome">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              home
-            </span>
-          </button>
-        </a>
-        <a href = "./login">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              logout
-            </span>
-          </button>
-        </a>
-        <a href = "./customer">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              account_circle
-            </span>
-          </button>
-        </a>
-        <div>
-          <a href = "./shoppingCart">
+         <Link to= "/welcome">
             <button type = "button" class = "icon-button">
               <span class = "material-icons md-48">
-                shopping_cart
-              </span>
-              <span class = "icon-button__badge">
-                0
+                home
               </span>
             </button>
-          </a>
+          </Link>
+          <Link to= "/login">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                logout
+              </span>
+            </button>
+          </Link>
+          <Link to= "/customer">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                account_circle
+              </span>
+            </button>
+          </Link>
+          <div>
+            <Link to= "/shoppingCart">
+              <button type = "button" class = "icon-button">
+                <span class = "material-icons md-48">
+                  shopping_cart
+                </span>
+                <span class = "icon-button__badge">
+                  0
+                </span>
+              </button>
+            </Link>
         </div>
       </div>
 
       <div class = "extra-customer-buttons">
-        <a href = "./paymentInformation">
+        <Link to = "/paymentInformation">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               credit_card
             </span>
           </button>
-        </a>
-        <a href = "./orderHistory">
+        </Link>
+        <Link to = "/orderHistory">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               history
             </span>
           </button>
-        </a>
+        </Link>
       </div>
       <div class = "change-information-container">
         <input type = "radio" id = "AddCreditCard" name = "payment_details_edited" value = "AddCreditCard" class = "form-change-buttons" onClick = {onClick1}/>

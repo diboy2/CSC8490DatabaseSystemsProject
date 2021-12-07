@@ -2,7 +2,7 @@ import './main.css';
 import React, {useState} from 'react';
 import Axios from 'axios';
 
-const getAddress = () => {
+const GetAddress = () => {
   const [data, setData] = useState('');
   const url = "http://localhost:3001/api/address";  
 
@@ -150,4 +150,4 @@ const getAddress = () => {
   )
 };
 
-export default getAddress
+export default GetAddress

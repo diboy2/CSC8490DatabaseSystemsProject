@@ -1,22 +1,63 @@
 import './main.css';
+import Axios from 'axios';
 
-import React, {useContext} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
 
+import { NavLink, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {  Link } from 'gatsby';
+import { MenuContext } from '../context/MenuContext';
+import { Menu } from './menu'
+import { ShoppingCart } from './shoppingCart' 
+import { Customer } from './customer' 
+import { OrderHistory } from './orderHistory' 
+
+
+
 const Welcome = () => {
+
 const dispatch = useContext(GlobalDispatchContext);
 const state = useContext(GlobalStateContext);
 
-console.log(state);
+const [fetched, setFetched] = useState(false);
 
-function updateState(obj){
+console.log('From welcome::',state);
 
-  dispatch({type : 'ADD_ITEM', payload : obj})    
-  console.log(state);
+  function updateState(obj){
+
+    dispatch({type : 'ADD_ITEM', payload : obj})    
+    console.log(state);
     
   }
 
+  useEffect(() => {
+    console.log('From useEffect ', state)
+    if( state.shopping_cart_id === 0){
+    const url = "http://localhost:3001/api/shoppingCartId"; 
+    Axios.get(url).then((response) => {  
+      const index = parseInt(response.data) + 1;
+      dispatch({type : 'ADD_SC', payload : index});
+    }
+    );
+    }
+
+    console.log(state);
+    console.log("mounted");    
+  }, []);
+  
+    
+
   return (
+    <Router>
+
+     <MenuContext.Provider value = 'Hello from Context'>
+                  <Routes>
+                    <Route path = '/menu'> exact component = { Menu } > </Route>
+                    <Route path = '/shoppingCart'> exact component = { ShoppingCart } > </Route>
+                    <Route path = '/customer'> exact component = { Customer } > </Route>
+                    <Route path = '/orderHistory'> exact component = { OrderHistory } > </Route>
+                  </Routes>
+                  </MenuContext.Provider>
   <div>
     <head>
       <style>
@@ -35,38 +76,38 @@ function updateState(obj){
 
     <body>
       <div class = "dormdash-menu-buttons">
-        <a href = "./welcome">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              home
-            </span>
-          </button>
-        </a>
-        <a href = "./login">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              logout
-            </span>
-          </button>
-        </a>
-        <a href = "./customer">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              account_circle
-            </span>
-          </button>
-        </a>
-        <div>
-          <a href = "./shoppingCart">
+        <Link to= "/welcome">
             <button type = "button" class = "icon-button">
               <span class = "material-icons md-48">
-                shopping_cart
-              </span>
-              <span class = "icon-button__badge">
-                0
+                home
               </span>
             </button>
-          </a>
+          </Link>
+          <Link to= "/login">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                logout
+              </span>
+            </button>
+          </Link>
+          <Link to= "/customer">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                account_circle
+              </span>
+            </button>
+          </Link>
+          <div>
+            <Link to= "/shoppingCart">
+              <button type = "button" class = "icon-button">
+                <span class = "material-icons md-48">
+                  shopping_cart
+                </span>
+                <span class = "icon-button__badge">
+                  0
+                </span>
+              </button>
+            </Link>
         </div>
       </div>
 
@@ -80,15 +121,22 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">St. Mary's Dining Hall</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "1 St. Mary's Hall - Dining_Hall" onClick={e => updateState(e.target.id)}> View Menu</button>
-                  </a>
+
+                 
+
+                  <Link to = "/menu/" >    
+                          <button class="dining-menu-button" id = "1 St. Mary's Hall - Dining_Hall" onClick={e => updateState(e.target.id)}> View Menu</button>
+                  </Link>
+
+     
+                  
+
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Second Storey</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "2 St. Mary's Hall - Dining_Hall"  onClick = {e => {dispatch({type : 'ADD_ITEM', payload : e.target.id})}}>View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "2 St. Mary's Hall - Dining_Hall"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -103,9 +151,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Dougherty Dining Hall</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "3 Doherty Hall - Dougherty Dining Hall"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "3 Dohetry Hall - Dougherty Dining Hall"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -120,15 +168,16 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Curley Exchange</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "4 Bartley Hall - The Curley Exchange"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "4 Bartley Hall - The Curley Exchange"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                    </Link>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "5 Bartley Hall - Holy Grounds"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                    
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "5 Bartley Hall - Holy Grounds"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                      </Link>
                 </h3>
               </div>
             </div>
@@ -143,9 +192,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "6 CEER - Holy Grounds"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                  <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "6 CEER - Holy Grounds"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -160,27 +209,30 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name" >Holy Grounds</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "7 Connelly Hall - Holy Grounds"  onClick = "updateState(this.id)" >View Menu</button>
-                  </a>
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "7 Connelly Hall - Holy Grounds"  onClick = {e => updateState(e.target.id)} >View Menu</button>
+                    </Link>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Belle Air Terrace</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "8 Connelly Hall - Belle Air Terrace"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "8 Connelly Hall - Belle Air Terrace"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                 </Link>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Freshens</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "9 Connelly Hall - Freshens"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                
+                 <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "9 Connelly Hall - Freshens"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                </Link>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Connelly Convenience</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "10 Connelly Hall - Connelly Convenience"  onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                  
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "10 Connelly Hall - Connelly Convenience"  onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
+
                 </h3>
               </div>
             </div>
@@ -195,9 +247,10 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Recovery Room</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "11 Driscoll Hall - The Recovery Room" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                    
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "11 Driscoll Hall - The Recovery Room" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                    </Link>
                 </h3>
               </div>
             </div>
@@ -212,9 +265,11 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Cafe Nova</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "12 Cafe Nova - Cafe Nova" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                    
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "12 Cafe Nova - Cafe Nova" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                    </Link>
+
                 </h3>
               </div>
             </div>
@@ -229,9 +284,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "13 Falvey Memorial Library - Holy Grounds" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                     <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "13 Falvey Memorial Library - Holy Grounds" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                    </Link>
                 </h3>
               </div>
             </div>
@@ -246,9 +301,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">St. Augustine Cafe</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "14 St. Augustine Center for the liberal arts - St Augustine Cafe" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "14 St. Augustine Center for the liberal arts - St Augustine Cafe" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -263,15 +318,15 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Court</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "15 Donahue Hall - The Court" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "15 Donahue Hall - The Court" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                    </Link>
                 </h3>
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Donahue Market</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "16 Donahue Hall - Donahue Market" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "16 Donahue Hall - Donahue Market" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -286,9 +341,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">Holy Grounds</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "17 The Commons - Holy Grounds" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                
+                    <button class="dining-menu-button" id = "17 The Commons - Holy Grounds" onClick = {e => updateState(e.target.id)}>View Menu</button>
+               
                 </h3>
               </div>
             </div>
@@ -303,9 +358,9 @@ function updateState(obj){
               <div class="dining-item-text">
                 <h3 class="dining-item-heading">
                   <span class="dining-item-name">The Law School Cafe</span>
-                  <a href = "./menu">
-                    <button class="dining-menu-button" id = "18 Law School - The Law School Cafe" onClick = "updateState(this.id)">View Menu</button>
-                  </a>
+                   <Link to = "/menu/" >   
+                    <button class="dining-menu-button" id = "18 Law School - The Law School Cafe" onClick = {e => updateState(e.target.id)}>View Menu</button>
+                  </Link>
                 </h3>
               </div>
             </div>
@@ -314,7 +369,7 @@ function updateState(obj){
       </div>
     </body>
   </div>
-
+</Router>
   )
 };
 

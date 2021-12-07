@@ -1,8 +1,41 @@
 import './main.css';
-import * as React from "react";
+
+import React, {useContext, useState, useEffect} from 'react'
+import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
+import { NavLink, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {  Link } from 'gatsby';
+
+import Axios from 'axios';
 
 
-const shoppingCart = () => {
+const ShoppingCart = () => {
+
+  const dispatch = useContext(GlobalDispatchContext);
+  const state = useContext(GlobalStateContext);
+  const [fetched, setFetched] = useState(false);
+  const [data, setData] = useState('');
+
+  console.log('From the shoppoing Cart', state);
+  useEffect(() => {    
+    const url = "http://localhost:3001/api/getShoppingCart";
+    
+    Axios.post(url, {
+          shopping_cart_id : state.shopping_cart_id
+        }).then(res => {        
+        setData(res.data) 
+        console.log('the data', data);
+        setFetched(true);
+       })
+    console.log("mounted");   
+    console.log(data);   
+
+  }, []);
+
+
+
+  
+
+  console.log('From the shopping Cart',state);
 
   const onClick1 = () => {
   var btn_new_cc = document.getElementById("new_cc");
@@ -115,6 +148,15 @@ const shoppingCart = () => {
     btn_new_v_new_email.hidden = true;
   }}
 
+  function getTotal(data){
+    console.log('The data 1',data);
+     let total = 0;
+      data.map((item,index)=>{                    
+                      total = total + item[4]     
+                    })
+      return total;
+  }
+
   return (
   <div>
     <head>
@@ -134,38 +176,38 @@ const shoppingCart = () => {
 
     <body>
       <div class = "dormdash-menu-buttons">
-        <a href = "./welcome">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              home
-            </span>
-          </button>
-        </a>
-        <a href = "./login">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              logout
-            </span>
-          </button>
-        </a>
-        <a href = "./customer">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              account_circle
-            </span>
-          </button>
-        </a>
-        <div>
-          <a href = "./shoppingCart">
+        <Link to= "/welcome">
             <button type = "button" class = "icon-button">
               <span class = "material-icons md-48">
-                shopping_cart
-              </span>
-              <span class = "icon-button__badge">
-                0
+                home
               </span>
             </button>
-          </a>
+          </Link>
+          <Link to= "/login">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                logout
+              </span>
+            </button>
+          </Link>
+          <Link to= "/customer">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                account_circle
+              </span>
+            </button>
+          </Link>
+          <div>
+            <Link to= "/shoppingCart">
+              <button type = "button" class = "icon-button">
+                <span class = "material-icons md-48">
+                  shopping_cart
+                </span>
+                <span class = "icon-button__badge">
+                  0
+                </span>
+              </button>
+            </Link>
         </div>
       </div>
       <form>
@@ -184,124 +226,54 @@ const shoppingCart = () => {
                 Incomplete
               </h2>
             <h2 class = "shopping-cart-group-location-subheading">
-              Holy Grounds @ CEER
+              Your Items
             </h2>
             </div>
             <table class = "shopping-cart-table">
               <tr>
                 <th class = "shopping-cart-header">Item</th>
-                <th class = "shopping-cart-header">Quantity</th>
                 <th class = "shopping-cart-header">Price</th>
-                <th class = "shopping-cart-header">Option</th>
+                <th class = "shopping-cart-header">Quantity</th>
+                <th class = "shopping-cart-header">Dining Place</th>
+                <th class = "shopping-cart-header">SubTotal</th>
               </tr>
-              <tr>
-                <td class = "shopping-cart-row">Bruschetta</td>
-                <td class = "shopping-cart-row">1</td>
-                <td class = "shopping-cart-row">$12.90</td>
-                <td class = "shopping-cart-row">
-                  <button>
-                    Remove
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class = "shopping-cart-row">Bruschetta</td>
-                <td class = "shopping-cart-row">1</td>
-                <td class = "shopping-cart-row">$12.90</td>
-                <td class = "shopping-cart-row">
-                  <button>
-                    Remove
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class = "shopping-cart-row">Bruschetta</td>
-                <td class = "shopping-cart-row">1</td>
-                <td class = "shopping-cart-row">$12.90</td>
-                <td class = "shopping-cart-row">
-                  <button>
-                    Remove
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class = "shopping-cart-row">Bruschetta</td>
-                <td class = "shopping-cart-row">1</td>
-                <td class = "shopping-cart-row">$12.90</td>
-                <td class = "shopping-cart-row">
-                  <button>
-                    Remove
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td class = "shopping-cart-row">Bruschetta</td>
-                <td class = "shopping-cart-row">1</td>
-                <td class = "shopping-cart-row">$12.90</td>
-                <td class = "shopping-cart-row">
-                  <button>
-                    Remove
-                  </button>
-                </td>
-              </tr>
+             
+             {
+               fetched ? (
+
+
+                data.map((item,index)=>{
+                 return (  
+                <tr>
+                <td class = "shopping-cart-row">{ item[0].charAt(0).toUpperCase() + item[0].slice(1) }</td>
+                <td class = "shopping-cart-row">{Math.round(item[1] * 100) / 100}</td>
+                <td class = "shopping-cart-row">{item[2]}</td>
+                <td class = "shopping-cart-row">{item[3].slice(1)}</td>
+                <td class = "shopping-cart-row">{Math.round(item[4] * 100) / 100}</td>
+                  
+                
+              </tr>                             
+              )
+            }) )
+              : <div>  </div>
+              }
+
+            
+                
             </table>
             <div class = "delivery-metadata">
               <div class = "shopping-cart-total-cost">
                 <h3>
-                  Total: $64.50
+                {
+                  fetched ? (                
+                   <h2> Grant Total ${Math.round(getTotal(data) * 100) / 100} </h2>)
+             
+              :        <h2> Grant Total $0 </h2>
+              }
+
                 </h3>
               </div>
-              <div class = "shopping-cart-delivery-method">
-                <h3>
-                  Delivery Options:
-                </h3>
-                <select class = "form__input" autofocus placeholder = "Delivery Method">
-                  <option value="" disabled selected>Select a delivery method</option>
-                  <option value="Delivery">Delivery</option>
-                  <option value="Pick Up">Pick Up</option>
-                </select>
-              </div>
-              <div class = "shopping-cart-delivery-time">
-                <h3>
-                  Scheduled for delivery method at:
-                </h3>
-                <input type = "radio" id = "time1" name = "delivery_time1" value = "time1" class = "time-change-buttons"/>
-                <label for = "time1" class = "radio-input-label">20:00:00 EST</label>
-                <input type = "radio" id = "time2" name = "delivery_time1" value = "time2" class = "time-change-buttons"/>
-                <label for = "time2" class = "radio-input-label">20:05:00 EST</label>
-                <input type = "radio" id = "time3" name = "delivery_time1" value = "time3" class = "time-change-buttons"/>
-                <label for = "time3" class = "radio-input-label">20:10:00 EST</label>
-                <input type = "radio" id = "time4" name = "delivery_time1" value = "time4" class = "time-change-buttons"/>
-                <label for = "time4" class = "radio-input-label">20:15:00 EST</label>
-              </div>
-              <h2 class = "shopping-cart-group-location-subheading">
-                Holy Grounds @ Connelly Center
-              </h2>
-              </div>
-              <table class = "shopping-cart-table">
-                <tr>
-                  <th class = "shopping-cart-header">Item</th>
-                  <th class = "shopping-cart-header">Quantity</th>
-                  <th class = "shopping-cart-header">Price</th>
-                  <th class = "shopping-cart-header">Option</th>
-                </tr>
-                <tr>
-                  <td class = "shopping-cart-row">Bruschetta</td>
-                  <td class = "shopping-cart-row">1</td>
-                  <td class = "shopping-cart-row">$12.90</td>
-                  <td class = "shopping-cart-row">
-                    <button>
-                      Remove
-                    </button>
-                  </td>
-                </tr>
-              </table>
-              <div class = "delivery-metadata">
-                <div class = "shopping-cart-total-cost">
-                  <h3>
-                    Total: $12.90
-                  </h3>
-                </div>
+              
                 <div class = "shopping-cart-delivery-method">
                   <h3>
                     Delivery Options:
@@ -327,9 +299,13 @@ const shoppingCart = () => {
                 </div>
 
               <div class = "shopping-cart-payment-method">
-                <h2>
-                  Order Grand Total: $77.40
-                </h2>
+              {
+                fetched ? (                
+                   <h2> Grant Total ${Math.round(getTotal(data) * 100) / 100} </h2>)              
+             
+              :        <h2> Grant Total $0 </h2>
+              }
+
                 <h3>
                   Pay with:
                 </h3>
@@ -529,6 +505,8 @@ const shoppingCart = () => {
                   <div class = "form__input-group">
                     <select class = "form__input" autofocus placeholder = "Credit Card Name">
                       <option value="" disabled selected>Select an Credit Card</option>
+                      <option value="" disabled selected>American Express 1</option>
+                      <option value="" disabled selected>Visa 2</option>
                     </select>
                   </div>
                 </div>
@@ -546,13 +524,15 @@ const shoppingCart = () => {
             </div>
           </div>
         </div>
-        <button class = "form__button" type = "submit" id = "submitOrder">
+        <Link to = "/shoppingCart">
+        <button class = "form__button" id = "submitOrder">
           Submit Order
         </button>
+        </Link>
       </form>
     </body>
   </div>
   )
 };
 
-export default shoppingCart
+export default ShoppingCart

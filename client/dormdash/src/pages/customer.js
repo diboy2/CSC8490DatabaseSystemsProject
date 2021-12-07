@@ -1,7 +1,23 @@
 import './main.css';
-import * as React from "react";
+import React, {useContext, useState, useEffect} from 'react'
 
-const customer = () => {
+import { Bar as BarJS } from 'chart.js/auto'
+import { Bar }            from 'react-chartjs-2'
+import { NavLink, BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {  Link } from 'gatsby';
+import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalContextProvider';
+import { MenuContext } from '../context/MenuContext';
+import { ShoppingCart } from './shoppingCart' 
+import { Login } from './login' 
+
+const Customer = () => {
+  const dispatch = useContext(GlobalDispatchContext);
+  const state = useContext(GlobalStateContext);
+
+  const [data, setData] = useState("");
+
+  console.log('From the customer :: ',state);
+
   const onClick1 = () => {
   var btn_update_info = document.getElementById("updatePersonalInfo_div");
   var btn_add_address = document.getElementById("addAddressInfo_div");
@@ -45,6 +61,7 @@ const customer = () => {
   }}
 
   return (
+    <Router>
   <div>
     <head>
       <style>
@@ -62,57 +79,87 @@ const customer = () => {
     </div>
 
     <body>
+    <div class = "banner">
+     <Bar
+          data= {{
+              labels: ['AL','MS','PA','GA','NC'],
+              datasets: [
+                {
+                  label: 'Count of Customers by state',
+                  backgroundColor: 'rgba(75,192,192,1)',
+                  borderColor: 'rgba(0,0,0,1)',
+                  borderWidth: 2,
+                  data: [100,200,400,450,650]
+                }
+              ]
+            }}
+          options={{
+            maintainAspectRatio : false,
+            title:{
+              display:true,
+              text:'Average Rainfall per month',
+              fontSize:20
+            },
+            legend:{
+              display:true,
+              position:'right'
+            }
+          }}
+          height = {400}
+          width = {600}
+        />
+        </div>
       <div class = "dormdash-menu-buttons">
-        <a href = "./welcome">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              home
-            </span>
-          </button>
-        </a>
-        <a href = "./login">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              logout
-            </span>
-          </button>
-        </a>
-        <a href = "./customer">
-          <button type = "button" class = "icon-button">
-            <span class = "material-icons md-48">
-              account_circle
-            </span>
-          </button>
-        </a>
-        <div>
-          <a href = "./shoppingCart">
+        <Link to= "/welcome">
             <button type = "button" class = "icon-button">
               <span class = "material-icons md-48">
-                shopping_cart
-              </span>
-              <span class = "icon-button__badge">
-                0
+                home
               </span>
             </button>
-          </a>
+          </Link>
+          <Link to= "/login">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                logout
+              </span>
+            </button>
+          </Link>
+          <Link to= "/customer">
+            <button type = "button" class = "icon-button">
+              <span class = "material-icons md-48">
+                account_circle
+              </span>
+            </button>
+          </Link>
+          <div>
+            <Link to= "/shoppingCart">
+              <button type = "button" class = "icon-button">
+                <span class = "material-icons md-48">
+                  shopping_cart
+                </span>
+                <span class = "icon-button__badge">
+                  0
+                </span>
+              </button>
+            </Link>
         </div>
       </div>
 
       <div class = "extra-customer-buttons">
-        <a href = "./paymentInformation">
+        <Link to = "/paymentInformation">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               credit_card
             </span>
           </button>
-        </a>
-        <a href = "./orderHistory">
+        </Link>
+        <Link to = "/orderHistory">
           <button type = "button" class = "icon-button">
             <span class = "material-icons md-48">
               history
             </span>
           </button>
-        </a>
+        </Link>
       </div>
 
 
@@ -328,6 +375,8 @@ const customer = () => {
           </form>
         </div>
 
+
+
         <input type = "radio" id = "updateAddressInfo_button" name = "update_info_option" value = "updateAddressInfo" onClick = {onClick3}  class = "form-change-buttons"/>
         <label for = "updateAddressInfo_button" class = "radio-input-label">Update Existing Address Information</label>
         <div className = "container" hidden id = "updateAddressInfo_div">
@@ -440,12 +489,18 @@ const customer = () => {
               Submit Changes
             </button>
           </form>
+
+          
+
+
         </div>
       </div>
+
+
     </body>
   </div>
-
+  </Router>
   )
 };
 
-export default customer
+export default Customer

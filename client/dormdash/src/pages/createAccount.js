@@ -2,7 +2,7 @@ import './main.css';
 import React, {useState} from 'react';
 import Axios from 'axios';
 
-const createAccount = () => {
+const CreateAccount = () => {
   const [data, setData] = useState('');
   const url = "http://localhost:3001/api/signup";  
 
@@ -152,4 +152,4 @@ const createAccount = () => {
   )
 };
 
-export default createAccount;
+export default CreateAccount;

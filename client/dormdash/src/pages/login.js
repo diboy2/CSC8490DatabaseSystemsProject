@@ -5,7 +5,7 @@ import { GlobalDispatchContext, GlobalStateContext } from '../context/GlobalCont
 const Login = () => {
   const dispatch = useContext(GlobalDispatchContext);
   const state = useContext(GlobalStateContext);
-  console.log(state);
+  console.log('i am in login', state);
 
   
   return (
@@ -42,7 +42,6 @@ const Login = () => {
           <a className = "form__link" href = "./createAccount" id = "linkCreateAccount">
             New to DormDash? Create an Account. {state.dining_place}
           </a>
-
         
         </p>
       </form>
