@@ -30,6 +30,8 @@ export default function(app) {
     res.header("Access-Control-Allow-Origin", "*");
     res.send(JSON.stringify(address));
   });
+
+  
 }
 
 
