@@ -8,5 +8,8 @@ An on-demand online food ordering and delivery system that lets you order food f
 # Relational Schema
 ![ScreenShot](images/DormDash_RelSchema.png)
 
+# Dormdash Application Technologies
+![ScreenShot](images/applicationTechnologies.png)
+
 # Dormdash Application UI
 ![ScreenShot](images/applicationImage.png)
